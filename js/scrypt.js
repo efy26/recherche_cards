@@ -1,5 +1,3 @@
-
-
 const cartes = [
     {
         pays: "Cameroun",
@@ -54,16 +52,14 @@ const cartes = [
 ]
 window.onload = () => {
     afficherCartes()
-    
-    
-    
 }
 
 
 const afficherCartes = () => {
-    let recherche = document.querySelector(".recherche input")
+    let recherche = document.querySelector(".recherche input");
+    let containerNav = document.querySelector(".nav .container");
+    let resultatsBalise = document.createElement("p");
     for (let i = 0; i < cartes.length; i++) {
-        
         let balise_div_carte = document.createElement("div")
         balise_div_carte.className = "carte"
 
@@ -81,68 +77,29 @@ const afficherCartes = () => {
 
         balise_p.appendChild(balise_strong)
         balise_p.appendChild(balise_span)
-        
         balise_div_dscpt_carte.appendChild(balise_p)
 
         balise_div_carte.appendChild(balise_img_carte)
         balise_div_carte.appendChild(balise_div_dscpt_carte)
-
         document.querySelector(".main .container").appendChild(balise_div_carte)
-
-        // let rslt = document.querySelector(".main .container").length
-
-
         // ---------- REcherche ---------
-        
-        
+        recherche.addEventListener("input", (e) => {
+            let input_value = e.target.value.toUpperCase();
+            let balise_strong_value = balise_strong.innerHTML.toUpperCase();
 
-            
-
-        
-        recherche.addEventListener("keydown", (e) => {
-            let input_value = e.target.value.toUpperCase()
-            let balise_strong_value = balise_strong.innerHTML.toUpperCase()
-            if ( balise_strong_value.includes(input_value) == false) {
-                balise_div_carte.style = "display: none;"
-                // document.querySelector(".nav .container").innerHTML = `
-                // <p>Il y a <strong>${[0]}</strong> <span>résultat</span></p>
-                // `
-            }else {
-                document.querySelector(".nav .container").innerHTML = `
-                <p>Il y a <strong>${ cartes.length}</strong> <span>résultat (s)</span></p>
-                `
-
-                balise_div_carte.style = "display: grid;"
-                console.log(balise_div_carte.length);
-
-
-
-                
-                }
-
-        })
-        
-        
-            
-            
-            
-            
-            
-
-       
-
-
-
+            if (balise_strong_value.includes(input_value)) {
+                balise_div_carte.style.display = "grid";
+            } else {
+                balise_div_carte.style.display = "none";
+            }
+            // Mettre à jour le nombre de résultats
+            let nombreResultats = document.querySelectorAll('.carte[style="display: grid;"]').length;
+            resultatsBalise.innerHTML = `Il y a <strong>${nombreResultats}</strong> résultat${nombreResultats !== 1 ? 's' : ''}.`;
+        });
+        balise_div_carte.appendChild(balise_img_carte);
+        balise_div_carte.appendChild(balise_div_dscpt_carte);
+        document.querySelector(".main .container").appendChild(balise_div_carte);
     }
+    // Ajouter la balise p à la fin de la boucle
+    containerNav.appendChild(resultatsBalise);
 }
-
-
-
-
-    
-    
-
-
-
-    
-    
